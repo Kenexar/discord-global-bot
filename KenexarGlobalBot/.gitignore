@@ -365,3 +365,7 @@ FodyWeavers.xsd
 
 #rider
 .idea
+
+# configuration
+
+_config.yml
