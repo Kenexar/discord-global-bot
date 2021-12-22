@@ -1,4 +1,6 @@
-﻿using Discord;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 
@@ -24,9 +26,10 @@ public class Generel : ModuleBase
                 .AddField("UserID", Context.User.Id, true)
                 .AddField("Created at", Context.User.CreatedAt.ToString("dd.MM.yy"), true)
                 .AddField("Joined at", (Context.User as SocketGuildUser).JoinedAt.Value.ToString("dd.MM.yy"), true)
-                .AddField("Roles", string.Join("\n", (Context.User as SocketGuildUser).Roles.Select(x => x.Mention)), true)
+                .AddField("Roles", string.Join("\n", (Context.User as SocketGuildUser).Roles.Select(x => x.Mention)),
+                    true)
                 .WithCurrentTimestamp();
-            
+
             var embed = builder.Build();
             await Context.Channel.SendMessageAsync(null, false, embed);
         }
@@ -41,25 +44,13 @@ public class Generel : ModuleBase
                 .AddField("Joined at", (user as SocketGuildUser).JoinedAt.Value.ToString("dd.MM.yy"), true)
                 .AddField("Roles", string.Join("\n", (user as SocketGuildUser).Roles.Select(x => x.Mention)), true)
                 .WithCurrentTimestamp();
-            
+
             var embed = builder.Build();
             await Context.Channel.SendMessageAsync(null, false, embed);
         }
-        
-        
-        
-    }
 
-    [Command("purge")]
-    [RequireUserPermission(GuildPermission.ManageMessages)]
-    public async Task Purge(int amount)
-    {
-        var messages = await Context.Channel.GetMessagesAsync(amount + 1).FlattenAsync();
-        await (Context.Channel as SocketTextChannel).DeleteMessagesAsync(messages);
 
-        var message = await Context.Channel.SendMessageAsync($"Messages Deleted Count {amount}");
-        await Task.Delay(2500);
-        await message.DeleteAsync();
+
     }
 
     [Command("server")]
